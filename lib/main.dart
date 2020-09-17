@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './homepage.dart';
 
 void main() => runApp(MyApp());
 
@@ -6,11 +7,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Clock-app',
-        theme: ThemeData(
-          primarySwatch: Colors.brown,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: Scaffold());
+      debugShowCheckedModeBanner: false,
+      title: 'Clock-app',
+      theme: ThemeData(
+        primarySwatch: Colors.brown,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Homepage(),
+    );
   }
 }
