@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class ClockView extends StatefulWidget {
@@ -38,7 +37,6 @@ class _ClockViewState extends State<ClockView> {
 class ClockPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    print(size.width);
     // TODO: RADIUS AND OFFSET CALCULATIONS
     var centerX = size.width / 2;
     var centerY = size.height / 2;
