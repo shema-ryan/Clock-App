@@ -60,12 +60,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Avenir
+    - family: avenir
       fonts:
         - asset: assets/fonts/Avenir-Book.ttf
-        - asset: assets/fonts/Avenir-Heavy.ttf
-        - asset: assets/fonts/Avenir-Light.ttf
-        - asset: assets/fonts/Avenir-Medium.ttf
+#        - asset: assets/fonts/Avenir-Heavy.ttf
+#        - asset: assets/fonts/Avenir-Light.ttf
+#        - asset: assets/fonts/Avenir-Medium.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
