@@ -131,7 +131,7 @@ class _HomepageState extends State<Homepage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'switch theme',
+                          'Theme',
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                         Switch(
