@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ClockView extends StatefulWidget {
@@ -37,6 +38,7 @@ class _ClockViewState extends State<ClockView> {
 class ClockPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
+    print(size.width);
     // TODO: RADIUS AND OFFSET CALCULATIONS
     var centerX = size.width / 2;
     var centerY = size.height / 2;
@@ -72,6 +74,11 @@ class ClockPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 1;
+    var minDashBrush = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 1;
     // TODO: FINDING POINTS ON THE CIRCLE
     DateTime currentTime = DateTime.now();
     var secX = centerX + 100 * cos((currentTime.second * 6) * pi / 180);
@@ -97,12 +104,20 @@ class ClockPainter extends CustomPainter {
     canvas.drawCircle(center, 10, centerFillBrush);
 
     for (double i = 0; i < 360; i += 30) {
-      var x1 = centerX + 150 * cos(i * pi / 180);
-      var y1 = centerY + 150 * sin(i * pi / 180);
+      var x1 = centerX + 140 * cos(i * pi / 180);
+      var y1 = centerY + 140 * sin(i * pi / 180);
 
-      var x2 = centerX + 140 * cos(i * pi / 180);
-      var y2 = centerY + 140 * sin(i * pi / 180);
+      var x2 = centerX + 130 * cos(i * pi / 180);
+      var y2 = centerY + 130 * sin(i * pi / 180);
       canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
+    }
+    for (double i = 0; i < 360; i += 12) {
+      var x1 = centerX + 140 * cos(i * pi / 180);
+      var y1 = centerY + 140 * sin(i * pi / 180);
+
+      var x2 = centerX + 130 * cos(i * pi / 180);
+      var y2 = centerY + 130 * sin(i * pi / 180);
+      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), minDashBrush);
     }
   }
 

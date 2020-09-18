@@ -10,7 +10,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Clock-app',
       theme: ThemeData(
-        primarySwatch: Colors.brown,
+        fontFamily: 'Avenir',
+        primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Homepage(),
