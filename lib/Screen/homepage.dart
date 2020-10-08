@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:clock_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import './ClockView.dart';
+import 'ClockView.dart';
 import 'Package:provider/provider.dart';
+import 'alarm.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -164,9 +165,7 @@ class _HomepageState extends State<Homepage> {
                       ],
                     );
                   } else if (menu.menu == MenuType.Alarm) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return AlarmPage();
                   } else {
                     return Container();
                   }
