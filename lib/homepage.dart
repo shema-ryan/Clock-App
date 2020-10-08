@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:clock_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import './ClockView.dart';
+import 'Package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -31,147 +33,144 @@ class _HomepageState extends State<Homepage> {
       body: SafeArea(
         child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
+            Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildFirstColumn(
-                      imageUrl: 'assets/clock_icon.png', title: 'Clock'),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  _buildFirstColumn(
-                      imageUrl: 'assets/alarm_icon.png', title: 'Alarm'),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  _buildFirstColumn(
-                      imageUrl: 'assets/timer_icon.png', title: 'Timer'),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  _buildFirstColumn(
-                      imageUrl: 'assets/stopwatch_icon.png', title: 'Counter'),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: VerticalDivider(
-                color: Colors.white54,
-                thickness: 1,
-              ),
+                children: menuData
+                    .map((e) => _buildFirstColumn(e, context))
+                    .toList()),
+            VerticalDivider(
+              color: Colors.white54,
+              thickness: 1,
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                      'Clock',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Text(
-                          analogClock,
-                          style: TextStyle(
-                              fontSize: 38,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          dateAndDay,
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                      flex: 3,
-                      child: Align(
-                          alignment: Alignment.topCenter,
-                          child: ClockView(
-                            size: size * 0.35,
-                          ))),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
+              child: Consumer<MenuInfo>(
+                builder: (context, menu, _) {
+                  if (menu.menu == MenuType.clock) {
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Timezone',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Clock',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.language,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              timeZone,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              Text(
+                                analogClock,
+                                style: TextStyle(
+                                    fontSize: 38,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Divider(
-                            thickness: 1,
-                            color: Colors.white54,
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                dateAndDay,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Theme',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
+                        Expanded(
+                            flex: 3,
+                            child: Align(
+                                alignment: Alignment.topCenter,
+                                child: ClockView(
+                                  size: size * 0.35,
+                                ))),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Timezone',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Switch(
-                              activeTrackColor: Colors.orange[300],
-                              value: _value,
-                              onChanged: (value) {
-                                _value = !_value;
-                              },
-                            ),
-                          ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.language,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    timeZone,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.white54,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Theme',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Switch(
+                                    activeTrackColor: Colors.grey,
+                                    value: _value,
+                                    onChanged: (value) {
+                                      _value = !_value;
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
-                    ),
-                  ),
-                ],
+                    );
+                  } else if (menu.menu == MenuType.Alarm) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
               ),
             ),
           ],
@@ -181,23 +180,29 @@ class _HomepageState extends State<Homepage> {
   }
 }
 
-Widget _buildFirstColumn({String imageUrl, String title}) {
-  return Material(
-    color: Colors.transparent,
-    child: InkWell(
-      splashColor: Colors.grey,
-      onTap: () {},
+Widget _buildFirstColumn(MenuInfo _menu, BuildContext context) {
+  return Consumer<MenuInfo>(
+    builder: (context, menu, child) => FlatButton(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
+      padding: EdgeInsets.all(16.0),
+      onPressed: () {
+        var prov = Provider.of<MenuInfo>(context, listen: false);
+        prov.update(_menu);
+      },
+      color: _menu.menu == menu.menu ? Colors.grey : Colors.transparent,
       child: Column(
         children: [
           Image.asset(
-            imageUrl,
+            _menu.imageUrl,
             scale: 1.8,
           ),
           SizedBox(
             height: 5,
           ),
           Text(
-            title,
+            _menu.title,
             style: TextStyle(color: Colors.white),
           ),
         ],
