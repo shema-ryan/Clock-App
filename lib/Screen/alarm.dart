@@ -1,6 +1,12 @@
 import 'package:clock_app/models/alarm.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+import '../main.dart';
 
 class AlarmPage extends StatefulWidget {
   @override
@@ -29,6 +35,8 @@ class _AlarmPageState extends State<AlarmPage> {
           ListView(
             shrinkWrap: true,
             children: alarms.map<Widget>((clock) {
+              final String alarmTime =
+                  DateFormat.Hm().format(clock.alarmDateTime);
               return Container(
                 margin: EdgeInsets.only(bottom: 15.0),
                 padding: EdgeInsets.all(5.0),
@@ -87,7 +95,7 @@ class _AlarmPageState extends State<AlarmPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '7:00 Am',
+                          '$alarmTime Am',
                           style: TextStyle(
                             fontFamily: 'avenir',
                             fontSize: 20,
@@ -105,48 +113,79 @@ class _AlarmPageState extends State<AlarmPage> {
                 ),
               );
             }).followedBy([
-              DottedBorder(
-                color: Colors.grey,
-                borderType: BorderType.RRect,
-                strokeWidth: 2,
-                dashPattern: [10, 3],
-                radius: Radius.circular(15.0),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white10,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(20.0),
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/add_alarm.png',
-                          scale: 1.5,
+              alarms.length < 5
+                  ? DottedBorder(
+                      color: Colors.grey,
+                      borderType: BorderType.RRect,
+                      strokeWidth: 2,
+                      dashPattern: [10, 3],
+                      radius: Radius.circular(15.0),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white10,
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        SizedBox(
-                          height: 8,
+                        child: FlatButton(
+                          padding: EdgeInsets.all(20.0),
+                          onPressed: () {
+                            scheduleNotification();
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/add_alarm.png',
+                                scale: 1.5,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                'Add alarm',
+                                style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 19,
+                                    fontFamily: 'avenir',
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
-                        Text(
-                          'Add alarm',
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 19,
-                              fontFamily: 'avenir',
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
+                      ),
+                    )
+                  : Text('only five alarms allowed '),
             ]).toList(),
           ),
         ],
       ),
     );
   }
+}
+
+Future<void> scheduleNotification() async {
+  tz.initializeTimeZones();
+  var scheduleNotificationDateTime =
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: 10));
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notify', 'alarm_notify', 'Channel for alarm notifications',
+      icon: 'aaa',
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'));
+  var iosPlatformChannelSpecifics = IOSNotificationDetails(
+      sound: 'a_long_cold_sting.wav',
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true);
+  var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iosPlatformChannelSpecifics);
+  flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'office',
+      'Good morning office time',
+      scheduleNotificationDateTime,
+      platformChannelSpecifics,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidAllowWhileIdle: true);
 }
